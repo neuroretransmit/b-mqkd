@@ -27,10 +27,7 @@ namespace bb84
          * Constructor for initiator side of BB84 protocol
          * @param key_size: key size in bits
          */
-        server(size_t key_size) : KEY_SIZE(key_size)
-        {
-            
-        }
+        server(size_t key_size) : KEY_SIZE(key_size) {}
 
         /**
          * Generate base photons for initiator side
@@ -82,19 +79,16 @@ namespace bb84
 
             log::info("Binary key: %s", key_binary.c_str());
             log::info("Key bit length: %lu", key_binary.size());
-            
+
             if (key_binary.size() < KEY_SIZE)
                 return false;
-                
+
             convert_to_bytes(key_binary, key);
             return true;
         }
 
-        size_t key_size() const
-        {
-            return KEY_SIZE;
-        }
-        
+        size_t key_size() const { return KEY_SIZE; }
+
       private:
         const size_t KEY_SIZE;
         uniform_int_distribution<int> distribution = uniform_int_distribution<int>(1, 2);
