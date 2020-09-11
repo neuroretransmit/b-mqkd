@@ -56,7 +56,7 @@ namespace bb84
          * @param polarizations: initiate's polarizations
          * @param key: vector of bytes to store key in
          */
-        int check_polarizations(const vector<pair<int, int>>& photons, const vector<int>& polarizations,
+        bool check_polarizations(const vector<pair<int, int>>& photons, const vector<int>& polarizations,
                                  vector<u8>& key)
         {
             stringstream ss;
@@ -84,10 +84,10 @@ namespace bb84
             log::info("Key bit length: %lu", key_binary.size());
             
             if (key_binary.size() < KEY_SIZE)
-                return -1;
+                return false;
                 
             convert_to_bytes(key_binary, key);
-            return key_binary.size();
+            return true;
         }
 
         size_t key_size() const
