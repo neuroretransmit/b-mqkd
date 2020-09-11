@@ -9,5 +9,4 @@ add_executable(tests main.cc bb84.cc)
 target_link_libraries(tests ${GTEST_LIBRARIES} gmock gmock_main pthread)
 
 target_include_directories(tests
-    PUBLIC
-    ${CMAKE_BINARY_DIR}/proto)
+    PUBLIC)
