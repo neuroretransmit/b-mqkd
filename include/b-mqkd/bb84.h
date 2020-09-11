@@ -19,7 +19,7 @@ using std::uniform_int_distribution;
 /// BB84 quantum key distribution scheme simulation
 namespace bb84
 {
-    // initiator side of BB84 protocol
+    // Initiator side of BB84 protocol
     class server
     {
       public:
@@ -193,7 +193,9 @@ namespace bb84
             log::info(ss.str());
         }
 
+        
+        random_device r;
+        default_random_engine generator = default_random_engine(r());
         uniform_int_distribution<int> distribution = uniform_int_distribution<int>(1, 2);
-        default_random_engine generator;
     };
 } // namespace bb84
