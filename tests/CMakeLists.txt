@@ -5,9 +5,9 @@ find_package(GTest REQUIRED)
 find_package(Protobuf REQUIRED)
 
 add_compile_definitions(DEBUG)
-include_directories(${GTEST_INCLUDE_DIRS} ${GMOCK_INCLUDE_DIRS} ${Protobuf_INCLUDE_DIRS})
+include_directories(${GTEST_INCLUDE_DIRS} ${GMOCK_INCLUDE_DIRS})
 add_executable(tests main.cc bb84.cc)
-target_link_libraries(tests ${GTEST_LIBRARIES} ${PROTOBUF_LIBRARIES} gmock gmock_main pthread)
+target_link_libraries(tests ${GTEST_LIBRARIES} gmock gmock_main pthread)
 
 target_include_directories(tests
     PUBLIC
