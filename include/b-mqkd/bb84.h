@@ -19,11 +19,24 @@ using std::uniform_int_distribution;
 /// BB84 quantum key distribution scheme simulation
 namespace bb84
 {
+    // initiator side of BB84 protocol
     class server
     {
       public:
-        server() {}
+        /**
+         * Constructor for initiator side of BB84 protocol
+         * @param key_size: key size in bits
+         */
+        server(size_t key_size) : KEY_SIZE(key_size)
+        {
+            
+        }
 
+        /**
+         * Generate base photons for initiator side
+         * @param photons: vector to store photons in
+         * @param n: number of photons to create
+         */
         void generate_photons(vector<pair<int, int>>& photons, size_t n)
         {
             auto dice = bind(distribution, generator);
@@ -37,7 +50,13 @@ namespace bb84
             }
         }
 
-        void check_polarizations(const vector<pair<int, int>>& photons, const vector<int>& polarizations,
+        /**
+         * Check polarizations received from initiate and create secret key from truthiness
+         * @param photons: generated photons
+         * @param polarizations: initiate's polarizations
+         * @param key: vector of bytes to store key in
+         */
+        int check_polarizations(const vector<pair<int, int>>& photons, const vector<int>& polarizations,
                                  vector<u8>& key)
         {
             stringstream ss;
@@ -63,14 +82,30 @@ namespace bb84
 
             log::info("Binary key: %s", key_binary.c_str());
             log::info("Key bit length: %lu", key_binary.size());
+            
+            if (key_binary.size() < KEY_SIZE)
+                return -1;
+                
             convert_to_bytes(key_binary, key);
+            return key_binary.size();
         }
 
+        size_t key_size() const
+        {
+            return KEY_SIZE;
+        }
+        
       private:
+        const size_t KEY_SIZE;
         uniform_int_distribution<int> distribution = uniform_int_distribution<int>(1, 2);
         random_device r;
         default_random_engine generator = default_random_engine(r());
 
+        /**
+         * Convert bitstring to vector of bytes
+         * @param key: secret key bitstring
+         * @param bytes: vector of bytes to store key in
+         */
         void convert_to_bytes(const string& key, vector<u8>& bytes)
         {
             for (auto it = key.begin(); it < key.end(); it += 8) {
@@ -82,6 +117,11 @@ namespace bb84
             log::data(bytes);
         }
 
+        /**
+         * Show string representation of a single photon
+         * @param f: first element of photon
+         * @param s: second element of photon
+         */
         void show_photon(int f, int s)
         {
             if (f == 1) {
@@ -101,6 +141,10 @@ namespace bb84
             }
         }
 
+        /**
+         * Show a vector of photons
+         * @param photons: generated photons
+         */
         void show_photons(const vector<pair<int, int>>& photons)
         {
             for (const pair<int, int>& photon : photons)
@@ -108,20 +152,32 @@ namespace bb84
         }
     };
 
+    // Initiate side of BB84 protocol
     class client
     {
       public:
+        /// Constructor for initiate side of BB84 protocol
         client() {}
 
-        void choose_polarization(const vector<pair<int, int>>& photons, vector<int>& polarizations)
+        /**
+         * Create polarizatios of same length as initiator's photons
+         * @param n: number of photons
+         * @param polarizations: vector to store polarizations
+         */
+        void choose_polarization(size_t n, vector<int>& polarizations)
         {
             auto dice = bind(distribution, generator);
-            for (size_t i = 0; i < photons.size(); i++)
+            for (size_t i = 0; i < n; i++)
                 polarizations.push_back(dice());
             show_polarizations(polarizations);
         }
 
       private:
+        /**
+         * Show string representation of single polarization
+         * @param polarization: polarization value
+         * @param ss: stringstream to continue writing output to
+         */
         void show_polarization(int polarization, stringstream& ss)
         {
             if (polarization == 1)
@@ -130,6 +186,10 @@ namespace bb84
                 ss << "x, ";
         }
 
+        /**
+         * Show string representation of all polarizations
+         * @param polarizations: polarizations
+         */
         void show_polarizations(const vector<int>& polarizations)
         {
             stringstream ss;
