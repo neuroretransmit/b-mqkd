@@ -7,6 +7,8 @@ stages:
 before_script:
     - apt-get update && apt-get -y install cmake libgtest-dev libgmock-dev git
     - git clone https://gitlab.com/optimisticninja/log.git
+    - git clone https://gitlab.com/optimisticninja/rc6.git
+    - cd rc6 && mkdir build && cd build && cmake .. && make && make install && cd ..
     - cd log && mkdir build && cd build && cmake .. && make && make install && cd ..
     
 build:
