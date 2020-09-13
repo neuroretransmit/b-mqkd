@@ -15,16 +15,20 @@ void renegotiate(bb84::server& s, bb84::client& c, vector<pair<int, int>>& photo
 TEST(BB84, RenegotiateOfKeySize)
 {
     bb84::server s(128);
-    vector<pair<int, int>> photons;
-    s.generate_photons(photons, s.key_size() * 2);
     bb84::client c;
+    vector<pair<int, int>> photons;
     vector<int> polarizations;
-    c.choose_polarization(photons.size(), polarizations);
     vector<u8> key;
-    int adjustment = 1;
+    int adjustment = 0;
+
+    s.generate_photons(photons, 10);
+    c.choose_polarization(photons.size(), polarizations);
 
     do {
-        if (key.size() < s.key_size())
+        // Optimize with hill climb
+        if (key.size() == s.key_size())
+            break;
+        else if (key.size() < s.key_size())
             adjustment++;
         else if (key.size() > s.key_size())
             adjustment--;

@@ -193,7 +193,6 @@ namespace bb84
             log::info(ss.str());
         }
 
-        
         random_device r;
         default_random_engine generator = default_random_engine(r());
         uniform_int_distribution<int> distribution = uniform_int_distribution<int>(1, 2);
