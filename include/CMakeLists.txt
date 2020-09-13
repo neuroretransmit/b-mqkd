@@ -8,7 +8,7 @@ set(VERSION_PATCH   1   CACHE STRING "Project patch version number.")
 set(CMAKE_CXX_EXTENSIONS OFF)
 install(DIRECTORY ./ DESTINATION include
         FILES_MATCHING PATTERN "*.h")
-
+        
 if (CMAKE_BUILD_TYPE MATCHES "^[Rr]elease")
 	# first we can indicate the documentation build as an option and set it to ON by default
 	option(BUILD_DOC "Build documentation" ON)
