@@ -1,6 +1,10 @@
 # b-mqkd (In progress)
 
-Header only C++ implementation of [Multiparty Quantum Cryptography with Block Cipher RC6 (B-MQKD)](https://gitlab.com/optimisticninja/b-mqkd/-/blob/master/doc/Multiparty%20Quantum%20Cryptography%20with%20Block%20Cipher%20RC6%20(B-MQKD).pdf). Currently only the BB84 simulatied protocol is written.
+Header only C++ implementation of [Multiparty Quantum Cryptography with Block Cipher RC6 (B-MQKD)](https://gitlab.com/optimisticninja/b-mqkd/-/blob/master/doc/Multiparty%20Quantum%20Cryptography%20with%20Block%20Cipher%20RC6%20(B-MQKD).pdf). Currently only the BB84 **simulatied** protocol is written. 
+
+To actually achieve quantum key derivation, hardware is needed and trust of the "witness" (node observing the no-cloning property from an analog device) is a requirement of this project.
+
+See [issue #3 here](https://gitlab.com/optimisticninja/b-mqkd/-/issues/3) for investigations into cheap hardware implementations.
 
 ## Usage
 
@@ -28,6 +32,8 @@ int main()
     // Server-side, check polarizations and create  key
     vector<u8> key;
     s.check_polarizations(photons, polarizations, key);
+    
+    // TODO: Implement encryption/decryption process from B-MQKD paper
 }
 ```
 
